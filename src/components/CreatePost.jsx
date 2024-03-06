@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MyContext } from "../App";
 
 const INITIAL_POST = {
     title: '',
     content: '',
 }
 
-export default function CreatePost({ posts, setPosts }) {
+export default function CreatePost() {
+
+    const context = useContext(MyContext)
     const [post, setPost] = useState(INITIAL_POST)
 
     const handleChange = (e) => {
@@ -18,8 +21,10 @@ export default function CreatePost({ posts, setPosts }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setPosts([...posts, post])
+        context.setPosts([...context.posts, post])
         setPost(INITIAL_POST)
+        console.log( "Previous Post: " , JSON.parse(localStorage.getItem("lastPost")))
+        localStorage.setItem("lastPost", JSON.stringify(post))
     }
 
     return (
